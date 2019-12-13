@@ -1,20 +1,16 @@
 package com.example.logDemo;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Component;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.net.URL;
+
 @Slf4j
 @Component
-public class LogDemoApplicationTests {
+public class ClassTest {
 
   @Test
 	public void contextLoads() throws Exception {
@@ -27,12 +23,13 @@ public class LogDemoApplicationTests {
     log.info("isAnnotationPresent {}", clz.isAnnotationPresent(Component.class));
     log.info("getAnnotations.length {}", clz.getAnnotations().length);
     log.info(clz.getPackage().getName());
-    log.info(clz.getResource("aaa.txt").toString());
-    log.info(clz.getResource("aaa.txt").toURI().toString());
+    log.info(clz.getResource("DataTypeTest.class").toString()); //包下的资源文件可能不会到target目录
+    log.info(clz.getResource("DataTypeTest.class").toURI().toString());
     log.info(clz.getResource("/bbb.txt").toString());
     //clz.newInstance()
     //clz.getConstructor(Void.class).newInstance();
 //    clz.forName(className)
+
 	}
 
 }
