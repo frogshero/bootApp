@@ -1,9 +1,8 @@
-package com.example.logDemo;
+package com.example.logDemo.lock;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +18,6 @@ public class ThreadPoolExecutorTest {
     protected void beforeExecute(Thread t, Runnable r) {
       log.info("beforeExecute");
     }
-
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
       log.info("afterExecute");
