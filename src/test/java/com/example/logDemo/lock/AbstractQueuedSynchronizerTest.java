@@ -10,30 +10,6 @@ public class AbstractQueuedSynchronizerTest {
   public void test() throws InterruptedException {
     Mutex mutex = new Mutex();
 
-    new Thread(()-> {
-      mutex.lock();
-      try {
-        Thread.sleep(1000 * 10);
-        log.info("exit~~~");
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } finally {
-        mutex.unlock();
-      }
-    }).start();
-
-    new Thread(()-> {
-      mutex.lock();
-      try {
-        Thread.sleep(1000 * 20);
-        log.info("exit~~~");
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } finally {
-//        mutex.unlock();
-      }
-    }).start();
-
     Thread.sleep(1000);
     mutex.lock();
     try {
@@ -41,5 +17,31 @@ public class AbstractQueuedSynchronizerTest {
     } finally {
       mutex.unlock();
     }
+
+    new Thread(()-> {
+      mutex.lock();
+      try {
+        Thread.sleep(1000 * 10);
+        log.info("exit~~~");
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      finally {
+        mutex.unlock();
+      }
+    }).start();
+
+//    new Thread(()-> {
+//      mutex.lock();   //blocked
+//      try {
+//        Thread.sleep(1000 * 20);
+//        log.info("exit~~~");
+//      } catch (InterruptedException e) {
+//        e.printStackTrace();
+//      } finally {
+////        mutex.unlock();
+//      }
+//    }).start();
+
   }
 }
