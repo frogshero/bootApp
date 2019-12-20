@@ -23,8 +23,7 @@ public class ClassTest {
     log.info("isAnnotationPresent {}", clz.isAnnotationPresent(Component.class));
     log.info("getAnnotations.length {}", clz.getAnnotations().length);
     log.info(clz.getPackage().getName());
-    log.info(clz.getResource("DataTypeTest.class").toString()); //包下的资源文件可能不会到target目录
-    log.info(clz.getResource("DataTypeTest.class").toURI().toString());
+
     log.info(clz.getResource("/bbb.txt").toString());
     //clz.newInstance()
     //clz.getConstructor(Void.class).newInstance();

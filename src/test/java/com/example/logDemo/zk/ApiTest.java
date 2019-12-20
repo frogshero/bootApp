@@ -26,7 +26,7 @@ public class ApiTest implements Watcher {
 
   public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
     ApiTest test = new ApiTest();
-    ZooKeeper zk = new ZooKeeper("localhost", 2181, test);
+    ZooKeeper zk = new ZooKeeper("localhost:2181", 1000 * 600, test);
 
     //zk.addAuthInfo(); 权限
     log.info("status {}", zk.getState().name());
