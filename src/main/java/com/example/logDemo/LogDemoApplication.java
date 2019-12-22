@@ -1,5 +1,6 @@
 package com.example.logDemo;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,12 @@ public class LogDemoApplication {
 		SpringApplication.run(LogDemoApplication.class, args);
 	}
 	
+	@Value("${testVal}")
+	private String testVal;
+	
 	@GetMapping("/test")
 	public void test() {
-		log.info("aaaa");
+		log.info(testVal);
 	}
 
 }
