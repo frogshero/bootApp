@@ -13,7 +13,7 @@ public class ApiDebugTest implements Watcher {
 
     ZooKeeper zk = new ZooKeeper("localhost:2181", 1000 * 600, watcher);
 
-    zk.create("/test/aa123", "".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+    zk.create("/test/aa11", "".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
     zk.close();
   }
