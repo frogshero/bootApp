@@ -67,13 +67,6 @@ public class ClientCnxnSocketNIO extends ClientCnxnSocket {
             if (!incomingBuffer.hasRemaining()) {
                 /**
                  * @@apiNote flip 表示让buffer处于可以写的状态。
-                 * Buffer的相关几个属性和方法解释
-                 * A buffer's capacity is the number of elements it contains. The capagative and never changes.
-                 * A buffer's limit is the index of the first element that should not be read or written. A buffer's limit is never negative and is never greater than its capacity.
-                 * A buffer's position is the index of the next element to be read or written. A buffer's position is never negative and is never greater than its limit.
-                 * clear() makes a buffer ready for a new sequence of channel-read or relative put operations: It sets the limit to the capacity and the position to zero.
-                 * flip() makes a buffer ready for a new sequence of channel-write or relative get operations: It sets the limit to the current position and then sets the position to zero.
-                 * rewind() makes a buffer ready for re-reading the data that it already contains: It leaves the limit unchanged and sets the position to zero.
                  */
                 incomingBuffer.flip();
                 if (incomingBuffer == lenBuffer) {
@@ -354,9 +347,21 @@ public class ClientCnxnSocketNIO extends ClientCnxnSocket {
     @Override
     void doTransport(int waitTimeOut, List<Packet> pendingQueue, ClientCnxn cnxn)
             throws IOException, InterruptedException {
+        /**
+         * @@apiNote 选择可以进行I/O操作的channel
+         * This method performs a blocking selection operation. It returns only after at least one channel is selected,
+         * this selector's wakeup method is invoked, or the current thread is interrupted, whichever comes first.
+         */
         selector.select(waitTimeOut);
         Set<SelectionKey> selected;
         synchronized (this) {
+            /**
+             * @@apiNote 在前面的selector.select(waitTimeOut)方法里识别到的Channel的SelectionKey。这些Channel
+             * 至少准备好一个在对应的SelectionKey的兴趣集合里的操作。
+             * The selected-key set is the set of keys such that each key's channel was detected to be ready for at least
+             * one of the operations identified in the key's interest set during a prior selection operation.
+             * This set is returned by the selectedKeys method. The selected-key set is always a subset of the key set.
+             */
             selected = selector.selectedKeys();
         }
         // Everything below and until we get back to the select is

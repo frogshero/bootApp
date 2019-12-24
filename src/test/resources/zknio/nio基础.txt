@@ -1,0 +1,8 @@
+Buffer的相关几个属性和方法解释
+A buffer's capacity is the number of elements it contains. The capagative and never changes.
+A buffer's limit is the index of the first element that should not be read or written. A buffer's limit is never negative and is never greater than its capacity.
+A buffer's position is the index of the next element to be read or written. A buffer's position is never negative and is never greater than its limit.
+clear() makes a buffer ready for a new sequence of channel-read or relative put operations: It sets the limit to the capacity and the position to zero.
+flip() makes a buffer ready for a new sequence of channel-write or relative get operations: It sets the limit to the current position and then sets the position to zero.
+rewind() makes a buffer ready for re-reading the data that it already contains: It leaves the limit unchanged and sets the position to zero.
+

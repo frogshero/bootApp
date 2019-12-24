@@ -208,6 +208,7 @@ public class ClientCnxn {
 
     /**
      * This class allows us to pass the headers and the relevant records around.
+     * @@apiNote 数据写入BB
      */
     static class Packet {
         RequestHeader requestHeader;
@@ -363,7 +364,13 @@ public class ClientCnxn {
         readTimeout = sessionTimeout * 2 / 3;
         readOnly = canBeReadOnly;
 
-        sendThread = new SendThread(clientCnxnSocket);
+      /**
+       * @@apiNote channel读写线程
+       */
+      sendThread = new SendThread(clientCnxnSocket);
+      /**
+       * @@apiNote 回调应用的watch的线程
+       */
         eventThread = new EventThread();
         this.clientConfig=zooKeeper.getClientConfig();
         initRequestTimeout();
@@ -975,8 +982,8 @@ public class ClientCnxn {
                         }
 
                       /**
-                       * @@apiNote 重新建立watch，发给服务端注册。在FinalRequestProcessor.processRequest里处理
-                       * 最终会把这些watch添加到DataTree的3个WatchManager实例里
+                       * @@apiNote 重新建立watch，发给服务端注册, 在FinalRequestProcessor.processRequest里处理,
+                       * 会把这些watch添加到DataTree的3个WatchManager实例里
                        */
                       SetWatches sw = new SetWatches(setWatchesLastZxid,
                                                        dataWatchesBatch,
@@ -996,7 +1003,7 @@ public class ClientCnxn {
             }
           /**
            * @@apiNote 连接请求的RequestHeader为null。在服务端ZooKeeperServer和NIOServerCnxn里可以看到对连接请求
-           * 和非连接请求的Packet的处理
+           * 和非连接请求的Packet的分别处理
            */
           outgoingQueue.addFirst(new Packet(null, null, conReq,
                     null, null, readOnly));
