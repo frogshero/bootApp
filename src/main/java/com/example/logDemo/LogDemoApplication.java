@@ -16,13 +16,5 @@ public class LogDemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LogDemoApplication.class, args);
 	}
-	
-	@Value("${testVal}")
-	private String testVal;
-	
-	@GetMapping("/test")
-	public void test() {
-		log.info(testVal);
-	}
 
 }
