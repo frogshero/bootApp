@@ -23,6 +23,7 @@ public class IntegerTest {
     log.info("CAPACITY {}", CAPACITY);
     log.info("Integer MAX_VALUE {}", Integer.MAX_VALUE);
     log.info("CAPACITY {}", Integer.toBinaryString(CAPACITY)); //左移，右边补0
+    log.info("~CAPACITY {}", Integer.toBinaryString(~CAPACITY)); //取反
     log.info("-1 {}", Integer.toBinaryString(-1));
     log.info("RUNNING {}", Integer.toBinaryString(RUNNING));
 //    log.info(clz.getResource("IntegerTest.class").toString()); //包下的资源文件可能不会到target目录

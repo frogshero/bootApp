@@ -1,0 +1,3 @@
+$(".km-note").css("width", "500px")
+
+$(".ng-hide").removeClass()
