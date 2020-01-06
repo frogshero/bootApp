@@ -63,7 +63,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  */
 @SuppressFBWarnings({"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
-public class ClientCnxn {
+public class ClientCnxn2 {
     private static final Logger LOG = LoggerFactory.getLogger(ClientCnxn.class);
 
     /* ZOOKEEPER-706: If a session has a large number of watches set then

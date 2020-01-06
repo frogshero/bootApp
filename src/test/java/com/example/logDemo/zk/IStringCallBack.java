@@ -11,5 +11,7 @@ public class IStringCallBack extends Stat implements AsyncCallback.StringCallbac
   public void processResult(int rc, String path, Object ctx, String name) {
     //rc: result code 失败原因
     log.info("processResult {} {} {} {}", rc, path, ctx, name);
+
+
   }
 }

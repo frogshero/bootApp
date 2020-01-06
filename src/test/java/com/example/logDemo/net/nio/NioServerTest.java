@@ -1,4 +1,4 @@
-package com.example.logDemo.nio;
+package com.example.logDemo.net.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

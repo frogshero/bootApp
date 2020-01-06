@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class ClientCnxnSocketNIO extends ClientCnxnSocket {
+public class ClientCnxnSocketNIO2 extends ClientCnxnSocket {
     private static final Logger LOG = LoggerFactory
             .getLogger(ClientCnxnSocketNIO.class);
 
@@ -69,11 +69,14 @@ public class ClientCnxnSocketNIO extends ClientCnxnSocket {
                  * @@apiNote flip 表示让buffer处于可以写的状态。
                  */
                 incomingBuffer.flip();
+                /**
+                 * 任何消息过来先发一个长度消息，然后根据长度消息分配incomingBuffer的长度ByteBuffer.allocate(len)
+                 */
                 if (incomingBuffer == lenBuffer) {
                     //没有内容
                     recvCount.getAndIncrement();
                     readLength();
-                } else if (!initialized) {
+                } else if (!initialized) {  //先读连接结果
                     readConnectResult();
                     enableRead();
                     /**

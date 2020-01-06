@@ -1,0 +1,31 @@
+ZK NIO 的流程：
+
+先注册：
+sockKey = sock.register(selector, SelectionKey.OP_CONNECT);
+boolean immediateConnect = sock.connect(addr);
+if (immediateConnect) {  //不会立即连接
+    sendThread.primeConnection();
+}
+
+真正连接
+selector.select(waitTimeOut);
+selected = selector.selectedKeys();
+SocketChannel sc = ((SocketChannel) k.channel());
+if ((k.readyOps() & SelectionKey.OP_CONNECT) != 0) {
+        //立即连接
+        sendThread.primeConnection();
+}
+
+发一个连接包（空的header）到队列最前，此时队列可能已经有其他包了：
+outgoingQueue.addFirst(new Packet(null, null, conReq, null, null, readOnly));
+
+客户端调用zk.create，添加一个packet到ClientCnxn.outgoingQueue
+
+服务端接到连接包后发一个response的长度消息，再把真实的response发过来
+如果incomingBuffer == lenBuffer就是长度消息
+if (!initialized) readConnectResult();  //没有初始化就读连接消息
+
+if (replyHdr.getXid() == -1) 这是事件，由EventThread处理
+
+然后是response. 从packet = pendingQueue.remove()取出发出去的消息，设置finish=true唤醒发消息线程
+

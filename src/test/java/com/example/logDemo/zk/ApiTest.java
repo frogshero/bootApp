@@ -28,6 +28,7 @@ public class ApiTest implements Watcher {
     ApiTest test = new ApiTest();
     ZooKeeper zk = new ZooKeeper("localhost:2181", 1000 * 600, test);
 
+    Thread.sleep(10000);
     //zk.addAuthInfo(); 权限
     log.info("status {}", zk.getState().name());
 
