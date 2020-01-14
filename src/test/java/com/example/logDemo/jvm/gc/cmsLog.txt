@@ -1,0 +1,35 @@
+Example 8-1, "Output from the CMS Collector" is the output from the CMS collector with the options -verbose:gc
+and -XX:+PrintGCDetails, with a few minor details removed. Note that the output for the CMS collector is interspersed
+with the output from the minor collections; typically many minor collections occur during a concurrent collection cycle.
+CMS-initial-mark indicates the start of the concurrent collection cycle, CMS-concurrent-mark indicates the end of the
+concurrent marking phase, and CMS-concurrent-sweep marks the end of the concurrent sweeping phase.
+Not discussed previously is the precleaning phase indicated by CMS-concurrent-preclean. Precleaning represents work
+that can be done concurrently in preparation for the remark phase CMS-remark. The final phase is indicated
+by CMS-concurrent-reset and is in preparation for the next concurrent collection.
+
+//concurrent的含义是不停止应用的情况下进行垃圾收集
+
+日志格式[CMS-concurrent...开头的是结束标志，[GC [1...是暂停标志。[GC [DefNew...是minor gc
+ 8-1 Output from the CMS Collector
+[GC [1 CMS-initial-mark: 13991K(20288K)] 14103K(22400K), 0.0023781 secs]                //gc循环开始，标记1阶段，第一次暂停initial mark pause
+
+[GC [DefNew: 2112K->64K(2112K), 0.0837052 secs] 16103K->15476K(22400K), 0.0838519 secs]
+...
+[GC [DefNew: 2077K->63K(2112K), 0.0126205 secs] 17552K->15855K(22400K), 0.0127482 secs]
+
+[CMS-concurrent-mark: 0.267/0.374 secs]                                                 //标记阶段1结束
+[GC [DefNew: 2111K->64K(2112K), 0.0190851 secs] 17903K->16154K(22400K), 0.0191903 secs]
+
+[CMS-concurrent-preclean: 0.044/0.064 secs]                                             //准备标记阶段2
+
+[GC [1 CMS-remark: 16090K(20288K)] 17242K(22400K), 0.0210460 secs]                      //标记阶段2,第二次暂停remark pause
+[GC [DefNew: 2112K->63K(2112K), 0.0716116 secs] 18177K->17382K(22400K), 0.0718204 secs]
+[GC [DefNew: 2111K->63K(2112K), 0.0830392 secs] 19363K->18757K(22400K), 0.0832943 secs]
+...
+[GC [DefNew: 2111K->0K(2112K), 0.0035190 secs] 17527K->15479K(22400K), 0.0036052 secs]
+
+[CMS-concurrent-sweep: 0.291/0.662 secs]                                                //并发清除
+[GC [DefNew: 2048K->0K(2112K), 0.0013347 secs] 17527K->15479K(27912K), 0.0014231 secs]
+
+[CMS-concurrent-reset: 0.016/0.016 secs]                                                //gc循环结束
+[GC [DefNew: 2048K->1K(2112K), 0.0013936 secs] 17527K->15479K(27912K), 0.0014814 secs]

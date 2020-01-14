@@ -1,0 +1,21 @@
+product表示在所有平台的默认值是一样的
+pd product 表示标志的默认值独立于平台
+
+~~~~~~~~~~~~~~~~~~~~~~~MetaSpace
+java -XX:+PrintFlagsInitial | findStr MetaspaceSize  默认Metaspace只有20M
+    uintx MetaspaceSize                             = 21810376                            {pd product}
+
+Metaspace满导致FULL GC
+2020-01-11T21:13:57.687+0800: 8.336: [Full GC (Metadata GC Threshold) [PSYoungGen: 22967K->0K(622592K)] [ParOldGen: 83239K->35833K(128512K)] 106207K->35833K(751104K), [Metaspace: 20762K->20760K(1069056K)], 0.0372300 secs] [Times: user=0.14 sys=0.00, real=0.04 secs]
+
+jstat -gccapacity 4568 启动后Metaspace有97M
+ NGCMN    NGCMX     NGC     S0C   S1C       EC      OGCMN      OGCMX       OGC         OC       MCMN     MCMX      MC     CCSMN    CCSMX     CCSC    YGC    FGC
+ 84992.0 698880.0 531968.0 5120.0 7680.0 515584.0   171008.0  1398272.0   330752.0   330752.0      0.0 1134592.0  97328.0      0.0 1048576.0  11568.0     94     4
+
+
+~~~~~~~~~~~~~~~~~~~~~~Young分配失败
+2020-01-11T21:13:51.474+0800: 2.123: [GC (Allocation Failure) [PSYoungGen: 64512K->9377K(74752K)] 64512K->9457K(245760K), 0.0081762 secs] [Times: user=0.13 sys=0.00, real=0.01 secs]
+
+
+jmap -dump:format=b,file=d:/ddd 13772 不用live不会触发fullgc
+jhat -port 9998 d:/ddd
