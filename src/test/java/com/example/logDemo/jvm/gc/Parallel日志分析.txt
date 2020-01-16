@@ -1,6 +1,8 @@
 分配失败导致ygc，要增加Eden区的话按YoungGenerationSizeIncrement=20%，在启动的时候有一个补充百分比YoungGenerationSizeSupplement=80%。补充百分比
 随着收集次数而减少，所以不会有长期影响。补充增量是为了启动性能。
 
+Parallet也会减少Eden区
+
 Growing and shrinking the size of a generation is done by increments that are a fixed percentage of the size of the generation
 so that a generation steps up or down toward its desired size. Growing and shrinking are done at different rates. By default
 a generation grows in increments of 20% and shrinks in increments of 5%. The percentage for growing is controlled by the

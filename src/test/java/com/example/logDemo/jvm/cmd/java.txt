@@ -1,0 +1,10 @@
+java -XX:+PrintFlagsInitial命令查看本机的初始化参数
+java -XX:+PrintCommandLineFlags -version //打印HotSpotVM 采用的自动优化参数
+
+一些启动参数：
+ -Xloggc:gc.log
+ -XX:+PrintGCTimeStamps
+ -XX:+PrintGCDetails
+ -XX:+UseG1GC
+ -XX:+UseStringDeduplication
+ -XX:+PrintStringDeduplicationStatistics 开启字符串去重

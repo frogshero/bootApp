@@ -21,10 +21,8 @@ public class JVMTest {
    *
    * 大对象直接分配到Old区，否则PS Eden Space
    *
-   * 使用java -XX:+PrintFlagsInitial命令查看本机的初始化参数
+   * 使用
    * uintx MetaspaceSize                             = 21810376                            {pd product}
-   *
-   * java -XX:+PrintCommandLineFlags -version //打印HotSpotVM 采用的自动优化参数
    *
    * -Xloggc:gc.log
    * -XX:+PrintGCTimeStamps
