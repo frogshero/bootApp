@@ -1,0 +1,28 @@
+分配失败导致ygc，要增加Eden区的话按YoungGenerationSizeIncrement=20%，在启动的时候有一个补充百分比YoungGenerationSizeSupplement=80%。补充百分比
+随着收集次数而减少，所以不会有长期影响。补充增量是为了启动性能。
+
+Growing and shrinking the size of a generation is done by increments that are a fixed percentage of the size of the generation
+so that a generation steps up or down toward its desired size. Growing and shrinking are done at different rates. By default
+a generation grows in increments of 20% and shrinks in increments of 5%. The percentage for growing is controlled by the
+command-line option -XX:YoungGenerationSizeIncrement=<Y> for the young generation and -XX:TenuredGenerationSizeIncrement=<T>
+for the tenured generation. The percentage by which a generation shrinks is adjusted by the command-line flag
+-XX:AdaptiveSizeDecrementScaleFactor=<D>. If the growth increment is X percent, then the decrement for shrinking is X/D percent.
+
+If the collector decides to grow a generation at startup, then there is a supplemental percentage is added to the increment.
+This supplement decays with the number of collections and has no long-term effect. The intent of the supplement is to increase
+startup performance. There is no supplement to the percentage for shrinking.
+
+74752K -> 139264K -> 280064K -> 546816K -> 628736K 做了3次翻倍，一次13%
+
+日志：
+CommandLine flags: -XX:InitialHeapSize=261831360 -XX:+ManagementServer -XX:MaxHeapSize=2147483648 -XX:MetaspaceSize=134217728 -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation -XX:+UseParallelGC
+2020-01-16T10:26:07.436+0800: 2.122: [GC (Allocation Failure) [PSYoungGen: 64512K->8969K(74752K)] 64512K->9058K(245760K), 0.0082781 secs] [Times: user=0.00 sys=0.00, real=0.01 secs]
+2020-01-16T10:26:07.695+0800: 2.381: [GC (Allocation Failure) [PSYoungGen: 73481K->10229K(74752K)] 73570K->10363K(245760K), 0.0082101 secs] [Times: user=0.08 sys=0.05, real=0.01 secs]
+2020-01-16T10:26:08.053+0800: 2.740: [GC (Allocation Failure) [PSYoungGen: 74741K->10226K(74752K)] 74875K->15298K(245760K), 0.0090808 secs] [Times: user=0.13 sys=0.00, real=0.01 secs]
+2020-01-16T10:26:08.245+0800: 2.931: [GC (Allocation Failure) [PSYoungGen: 74738K->10231K(139264K)] 79810K->19487K(310272K), 0.0089561 secs] [Times: user=0.13 sys=0.00, real=0.01 secs]
+2020-01-16T10:26:08.606+0800: 3.292: [GC (Allocation Failure) [PSYoungGen: 139255K->10229K(139264K)] 148511K->32055K(310272K), 0.0127213 secs] [Times: user=0.00 sys=0.00, real=0.01 secs]
+2020-01-16T10:26:08.883+0800: 3.569: [GC (Allocation Failure) [PSYoungGen: 139253K->19550K(280064K)] 161079K->41383K(451072K), 0.0150061 secs] [Times: user=0.13 sys=0.00, real=0.02 secs]
+2020-01-16T10:26:09.588+0800: 4.275: [GC (Allocation Failure) [PSYoungGen: 276062K->25074K(281600K)] 297895K->57903K(452608K), 0.0257940 secs] [Times: user=0.14 sys=0.03, real=0.03 secs]
+2020-01-16T10:26:10.207+0800: 4.893: [GC (Allocation Failure) [PSYoungGen: 281586K->23370K(546816K)] 314415K->58704K(717824K), 0.0188563 secs] [Times: user=0.05 sys=0.00, real=0.02 secs]
+2020-01-16T10:26:11.345+0800: 6.031: [GC (Allocation Failure) [PSYoungGen: 535882K->34800K(547328K)] 571216K->82392K(718336K), 0.0325579 secs] [Times: user=0.05 sys=0.02, real=0.03 secs]
+2020-01-16T10:26:12.244+0800: 6.931: [GC (Allocation Failure) [PSYoungGen: 547312K->44542K(628736K)] 594904K->110073K(799744K), 0.0364377 secs] [Times: user=0.16 sys=0.00, real=0.04 secs]
