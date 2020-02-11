@@ -6,7 +6,7 @@ younggc Eden区满后触发ygc,发生后Eden区会被resize. 103->96->92 Survivo
    [Eden: 96.0M(96.0M)->0.0B(92.0M) Survivors: 15.0M->14.0M Heap: 210.0M(250.0M)->118.5M(250.0M)]
 
 mixed收集时年轻代和老年代都会被收集。要收集老年代，G1要在应用运行时并行标记堆中所有活的对象。在整个java堆空间占用
-到达45%(InitiatingHeapOccupancyPercent)时并行标记阶段启动。如下：
+到达45%(InitiatingHeapOccupancyPercent)时并行标记阶段启动initial-mark。如下：
    [Eden: 102.0M(102.0M)->0.0B(100.0M) Survivors: 2048.0K->3072.0K Heap: 222.6M(250.0M)->121.4M(250.0M)]
  [Times: user=0.01 sys=0.02, real=0.01 secs]
 2020-01-16T10:15:32.930+0800: 46.911: [GC pause (G1 Evacuation Pause) (young) (initial-mark), 0.0065486 secs]

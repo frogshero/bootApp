@@ -1,3 +1,15 @@
+PSYoungGen: Parallel Scavenge Young Generation
+  新生代收集器，复制算法，并行收集，面向吞吐量要求（吞吐量优先收集器）。
+  吞吐量=用户代码运行时间/（用户代码运行时间+垃圾回收时间）
+  -XX:MaxGCPauseMillis：控制最大垃圾收集停顿时间，大于零的毫秒数。
+  -XX:GCTimeRatio：吞吐量大小，0到100的整数，垃圾收集时间占总时间的比例，计算1/（1+n）gc时间占用比例。
+  -XX:UseAdaptiveSizePolicy：自动调节。打开之后，就不需要设置新生代大小（-Xmn），Edian，survivor比例及（-XX:SurvivorRatio）
+  晋升老年代年龄（-XX:PretenureSizeThreshold），虚拟机根据系统运行状况，调整停顿时间，吞吐量， GC自适应调节策略，区别parnew。
+
+ParOldGen: Parallel Old Generation
+
+Footprint：占用空间
+
 分配失败导致ygc，要增加Eden区的话按YoungGenerationSizeIncrement=20%，在启动的时候有一个补充百分比YoungGenerationSizeSupplement=80%。补充百分比
 随着收集次数而减少，所以不会有长期影响。补充增量是为了启动性能。
 

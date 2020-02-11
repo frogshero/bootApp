@@ -1,5 +1,7 @@
 java -XX:+PrintFlagsInitial命令查看本机的初始化参数
-java -XX:+PrintCommandLineFlags -version //打印HotSpotVM 采用的自动优化参数
+java -XX:+PrintCommandLineFlags -version //打印HotSpotVM 采用的自动优化参数，可以查看用了什么收集器
+
+java -server 服务器模式
 
 一些启动参数：
  -Xloggc:gc.log
