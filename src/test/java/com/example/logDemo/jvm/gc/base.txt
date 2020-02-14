@@ -1,0 +1,5 @@
+Remember Set->Card Table:
+heap中每512byte为一个card,映射在card table的1byte。这个byte为1表示对应的512byte有对象指向其他Region的对象
+Young GC时，年老代的Region中只有byte=1的card被扫描
+
+
