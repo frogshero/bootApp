@@ -9,7 +9,9 @@ import java.util.concurrent.CountDownLatch;
 public class ThreadLocalTest {
 
   /**
-   * ThreadLocal对象是Thread.threadLocals的map的key，怎么避免hashCode冲突？
+   * ThreadLocal.set把真实的值放到Thread.currentThread().ThreadLocalMap这个数组
+   * 数组的index由ThreadLocal.threadLocalHashCode
+   * ThreadLocal对象是Thread.threadLocals数组的entry的key，怎么避免key冲突？
    * ThreadLocal.nextHashCode是一个静态方法。hashCode来源于静态AtomicInteger变量nextHashCode，
    * 每个hashCode会有一个递增值，所以不会冲突
    */

@@ -8,7 +8,6 @@ java -XX:+PrintCommandLineFlags -version //打印HotSpotVM 采用的自动优化
 -Xdebug
 java -server 服务器模式
 
-
 一些启动参数：
  -Xloggc:gc.log
  -XX:+PrintGCTimeStamps
@@ -16,3 +15,6 @@ java -server 服务器模式
  -XX:+UseG1GC
  -XX:+UseStringDeduplication
  -XX:+PrintStringDeduplicationStatistics 开启字符串去重
+
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=/logs/heapdump.hprof

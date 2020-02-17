@@ -31,6 +31,7 @@ public class ThreadPoolSubmitTest {
       return 11;
     });
     //在get里检查状态并休眠
-    log.info("result {}", ret.get());
+    Integer g = ret.get();
+    log.info("result {}", g);
   }
 }
