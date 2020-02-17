@@ -17,9 +17,12 @@ public class NioServerTest {
     while (true) {
       log.info("listen to ~~~~~~~~~");
       SocketChannel socketChannel = serverSocketChannel.accept();
-      ByteBuffer bb = ByteBuffer.allocate(3);
-      socketChannel.read(bb);
-      log.info("received String: " + new String(bb.array()));
+      ByteBuffer bb = ByteBuffer.allocate(1024);
+      int len = socketChannel.read(bb);
+      byte[] data = new byte[len];
+      bb.flip();
+      bb.get(data, 0, len);
+      log.info("received String: " + new String(data));
 
       bb.clear();
       bb.put("def".getBytes()); //position = 3
