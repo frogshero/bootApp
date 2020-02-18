@@ -26,7 +26,7 @@ public class NioClientTest {
     socketChannel.configureBlocking(false);  //用Selector就必须是异步方式
 
     //socketChannel注册到selector的时候要指定是否需要读写
-    SelectionKey selectionKey = socketChannel.register(selector, SelectionKey.OP_CONNECT);
+    SelectionKey selectionKey = socketChannel.register(selector, SelectionKey.OP_CONNECT, "Client");
 
     socketChannel.connect(new InetSocketAddress("localhost", 9999));
 
@@ -74,7 +74,9 @@ public class NioClientTest {
       log.info("get response: {}", new String(baos.toByteArray()));
     }
 
+    log.info("close {}", selectionKey.attachment());
     socketChannel.close();
+    selector.close(); //invalidate keys
   }
 
   @Test
@@ -85,9 +87,8 @@ public class NioClientTest {
   private static void fileToBB(String resource, SocketChannel destChannel) throws IOException {
     File file = new ClassPathResource(resource).getFile();
     RandomAccessFile raf = new RandomAccessFile(file, "rw");
+    FileChannel fc = raf.getChannel();
     try {
-      FileChannel fc = raf.getChannel();
-
       ByteBuffer bb = ByteBuffer.allocate((int)fc.size());
       fc.read(bb);
       log.info("file content {}", new String(bb.array()));
@@ -95,6 +96,7 @@ public class NioClientTest {
       bb.flip();
       fc.transferTo(0, fc.size(), destChannel);
     } finally {
+      fc.close();
       raf.close();
     }
   }
