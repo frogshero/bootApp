@@ -1,4 +1,4 @@
-package com.example.logDemo.net.nio;
+package com.example.logDemo.io.nio;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -6,14 +6,12 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
-import java.util.Set;
 
 @Slf4j
 public class NioClientTest {
