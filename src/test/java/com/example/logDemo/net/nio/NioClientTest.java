@@ -1,18 +1,24 @@
 package com.example.logDemo.net.nio;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.util.Arrays;
 import java.util.Set;
 
 @Slf4j
 public class NioClientTest {
 
+  //byte[] data = {'a', 'b'};
   public static void main(String[] args) throws IOException, InterruptedException {
     Selector selector = Selector.open();
 
@@ -32,33 +38,63 @@ public class NioClientTest {
       log.info("client connected to server {}", connected);
     }
 
-    ByteBuffer bb = ByteBuffer.allocate(3);
-
     selector.selectNow();
     if ((selectionKey.readyOps() & SelectionKey.OP_WRITE) != 0) {
-      bb.put("abc".getBytes());
-      bb.flip();  //position = 0 转换为读取内容状态
-      socketChannel.write(bb);
-//    int bytesRead = socketChannel.read(buf);
-      log.info(new String(bb.array()));
+//      bb.put("abc".getBytes());
+//      bb.flip();  //position = 0 转换为读取内容状态
+//      socketChannel.write(bb);
+//      log.info(new String(bb.array()));
+      fileToBB("bbb.txt", socketChannel);  //从文件直接发送
     } else {
       log.info("cannot write");
     }
 
     Thread.sleep(1000);  //等服务端发反馈
-    selector.selectNow();
-    if (selectionKey.isReadable()) {
-      bb.clear();
-      int len = socketChannel.read(bb);  //blocking Mode
-      if (len > 0) {
-        log.info("get response: {}", new String(bb.array()));
-      } else {
-        log.info("No response");
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+      ByteBuffer bb = ByteBuffer.allocate(10);
+
+      int channels = selector.selectNow();
+      while (channels > 0) {
+        if (selectionKey.isReadable()) {
+          bb.clear();
+          int len = socketChannel.read(bb);  //unblocking Mode
+          if (len > 0) {
+            bb.flip();
+            baos.write(Arrays.copyOf(bb.array(), len));
+//          while (bb.hasRemaining()) {
+          } else {
+            log.info("No response");
+          }
+        } else {
+          log.info("Cannot read");
+        }
+        channels = selector.selectNow();   //一次读不完再selectNow
       }
-    } else {
-      log.info("Cannot read");
+      log.info("get response: {}", new String(baos.toByteArray()));
     }
 
     socketChannel.close();
+  }
+
+  @Test
+  public void testFile() {
+
+  }
+
+  private static void fileToBB(String resource, SocketChannel destChannel) throws IOException {
+    File file = new ClassPathResource(resource).getFile();
+    RandomAccessFile raf = new RandomAccessFile(file, "rw");
+    try {
+      FileChannel fc = raf.getChannel();
+
+      ByteBuffer bb = ByteBuffer.allocate((int)fc.size());
+      fc.read(bb);
+      log.info("file content {}", new String(bb.array()));
+
+      bb.flip();
+      fc.transferTo(0, fc.size(), destChannel);
+    } finally {
+      raf.close();
+    }
   }
 }

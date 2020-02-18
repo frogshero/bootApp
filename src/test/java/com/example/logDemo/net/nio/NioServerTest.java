@@ -25,12 +25,17 @@ public class NioServerTest {
       log.info("received String: " + new String(data));
 
       bb.clear();
-      bb.put("def".getBytes()); //position = 3
+
+      byte[] append = " -> 使用 FileChannel 从Buffer里读取数据的例子, 来自于http://tutorials.jenkov.com/和JDK文档".getBytes();
+      byte[] response = new byte[len + append.length];
+      System.arraycopy(data, 0, response, 0, len);
+      System.arraycopy(append, 0, response, len, append.length);
+      bb.put(response);
       bb.flip();  //position = 0
       while (bb.hasRemaining()) {
         socketChannel.write(bb);
       }
-      log.info("send response: " + new String(bb.array()));
+      log.info("send response: " + new String(response));
     }
   }
 }
