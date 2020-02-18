@@ -17,6 +17,7 @@ public class IntegerTest {
 
   @Test
   public void testType() {
+    log.info("{}", Integer.toBinaryString(13));
     int COUNT_BITS = Integer.SIZE - 3;
     log.info("Integer bit SIZE {}", COUNT_BITS);
     log.info("1 {}", Integer.toBinaryString(1));

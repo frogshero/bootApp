@@ -26,8 +26,7 @@ public class NioClientTest {
     socketChannel.configureBlocking(false);  //用Selector就必须是异步方式
 
     //socketChannel注册到selector的时候要指定是否需要读写
-    SelectionKey selectionKey = socketChannel.register(selector,
-            SelectionKey.OP_CONNECT | SelectionKey.OP_WRITE | SelectionKey.OP_READ);
+    SelectionKey selectionKey = socketChannel.register(selector, SelectionKey.OP_CONNECT);
 
     socketChannel.connect(new InetSocketAddress("localhost", 9999));
 
@@ -38,6 +37,7 @@ public class NioClientTest {
       log.info("client connected to server {}", connected);
     }
 
+    selectionKey.interestOps(SelectionKey.OP_WRITE);
     selector.selectNow();
     if ((selectionKey.readyOps() & SelectionKey.OP_WRITE) != 0) {
 //      bb.put("abc".getBytes());
@@ -53,6 +53,7 @@ public class NioClientTest {
     try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
       ByteBuffer bb = ByteBuffer.allocate(10);
 
+      selectionKey.interestOps(SelectionKey.OP_READ | SelectionKey.OP_WRITE);  //多次读取的话必须要加OP_WRITE
       int channels = selector.selectNow();
       while (channels > 0) {
         if (selectionKey.isReadable()) {
