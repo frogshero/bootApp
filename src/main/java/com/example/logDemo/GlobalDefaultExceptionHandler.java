@@ -13,9 +13,7 @@ public class GlobalDefaultExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResult> handleException(HttpServletRequest request,
-                                                           HttpStatus status, String
-                                                                       errorMessage, Throwable ex) {
+    public ResponseEntity<ApiResult> handleException(String errorMessage, Throwable ex) {
         ApiResult res = new ApiResult();
         res.setCode(ex.getMessage());
         res.setMessage(errorMessage);

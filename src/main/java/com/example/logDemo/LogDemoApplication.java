@@ -17,4 +17,8 @@ public class LogDemoApplication {
 		SpringApplication.run(LogDemoApplication.class, args);
 	}
 
+	@GetMapping("/health")
+	public String health() {
+		return "health is OK";
+	}
 }
