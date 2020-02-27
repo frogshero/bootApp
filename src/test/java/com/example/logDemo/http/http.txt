@@ -1,0 +1,14 @@
+https://gitbook.cn/books/5e401e101104c82a764119da/index.html
+HTTP： 超文本（Hypertext）、传输（Transfer）、协议（Protocol）
+
+HTTP网络模型
+应用层：报文message，内容格式，HTTP，SMTP，FTP，DNS
+表示层：数据压缩和数据加密
+会话层：数据交换的定界和同步功能，包括建立检查点和恢复方案
+运输层：报文段(segment)，TCP(传输控制协议,可靠的协议，而可靠能保证数据不丢失)，UDP协议
+网络层：数据报(datagram)，IP协议Internet Protocol 通信双方寻址
+链路层：帧(frame)，链路层的例子包括以太网、WiFi 和电缆接入的 DOCSIS 协议
+物理层：关于双绞铜线、关于同轴电缆、关于光纤等等
+
+DNS 的全称是域名系统（Domain Name System，缩写：DNS），它作为将域名和 IP 地址相互映射的一个分布式数据库，能够使人更方便地访问互联网。
+
